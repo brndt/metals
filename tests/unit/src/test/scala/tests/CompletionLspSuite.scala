@@ -22,7 +22,8 @@ class CompletionLspSuite extends BaseCompletionLspSuite("completion") {
           |{
           |  "b": {},
           |  "c": {},
-          |  "a": { "dependsOn": ["c"] }
+          |  "a": { "dependsOn": ["c"] },
+          |  "d": { "dependsOn": ["c"] }
           |}
           |/b/src/main/scala/b/DefinedInB.scala
           |package b
@@ -37,6 +38,11 @@ class CompletionLspSuite extends BaseCompletionLspSuite("completion") {
           |object Outer {
           |  class DefinedInA
           |}
+          |/d/src/main/scala/d/DefinedInD.scala
+          |package d
+          |package object Outer {
+          |  class DefinedInD
+          |}
           |/a/src/main/scala/a/A.scala
           |package a
           |object Main {
@@ -50,6 +56,7 @@ class CompletionLspSuite extends BaseCompletionLspSuite("completion") {
         "DefinedIn@@",
         """|DefinedInA - a.Outer
            |DefinedInC - c
+           |DefinedInD - d.Outer
            |""".stripMargin,
       )
     } yield ()
