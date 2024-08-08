@@ -195,11 +195,11 @@ class ScalaToplevelMtags(
       data.token match {
         case PACKAGE =>
           val isNotPackageObject = emitPackage(currRegion.owner)
+          val nextRegion = new Region.Package(currentOwner, currRegion)
           if (isNotPackageObject) {
-            val nextRegion = new Region.Package(currentOwner, currRegion)
             loop(indent, false, nextRegion, newExpectPkgTemplate)
           } else
-            loop(indent, false, currRegion, newExpectTemplate())
+            loop(indent, false, nextRegion, newExpectTemplate())
         case IDENTIFIER
             if dialect.allowExtensionMethods && data.strVal == "extension" =>
           val nextOwner =
@@ -615,6 +615,8 @@ class ScalaToplevelMtags(
         true
       case OBJECT =>
         emitMember(owner)
+        val paths = parsePath()
+        paths.foreach { path => pkg(path.name, path.pos) }
         false
       case _ =>
         require(isOk = false, "package name or package object")

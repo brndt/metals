@@ -230,8 +230,11 @@ class ScalaToplevelSuite extends BaseToplevelSuite {
        |  trait A
        |""".stripMargin,
     List(
-      "x/y."
+      "x/",
+      "x/y.A#",
+      "x/y.",
     ),
+    mode = All,
   )
 
   check(
