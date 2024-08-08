@@ -245,7 +245,7 @@ class ScalaToplevelMtags(
           } else if (expectTemplate.exists(_.isImplicit)) {
             currRegion.termOwner
           } else { currRegion.owner }
-          emitMember(isPackageObject = false, owner)
+          emitMember(owner)
           val template = expectTemplate match {
             case Some(expect) if expect.isCaseClassConstructor =>
               newExpectCaseClassTemplate()
@@ -614,7 +614,7 @@ class ScalaToplevelMtags(
         paths.foreach { path => pkg(path.name, path.pos) }
         true
       case OBJECT =>
-        emitMember(isPackageObject = true, owner)
+        emitMember(owner)
         false
       case _ =>
         require(isOk = false, "package name or package object")
@@ -731,7 +731,7 @@ class ScalaToplevelMtags(
   /**
    * Enters a toplevel symbol such as class, trait or object
    */
-  def emitMember(isPackageObject: Boolean, owner: String): Unit = {
+  def emitMember(owner: String): Unit = {
     val kind = curr.token
     acceptTrivia()
     val maybeName = newIdentifier
@@ -743,12 +743,7 @@ class ScalaToplevelMtags(
         case TRAIT =>
           tpe(name.name, name.pos, Kind.TRAIT, 0)
         case OBJECT =>
-          if (isPackageObject) {
-            currentOwner = symbol(Scala.Descriptor.Package(name.name))
-            term("package", name.pos, Kind.OBJECT, 0)
-          } else {
-            term(name.name, name.pos, Kind.OBJECT, 0)
-          }
+          term(name.name, name.pos, Kind.OBJECT, 0)
       }
     }
     scanner.mtagsNextToken()

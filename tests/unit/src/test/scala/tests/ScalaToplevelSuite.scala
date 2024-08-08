@@ -205,13 +205,32 @@ class ScalaToplevelSuite extends BaseToplevelSuite {
   )
 
   check(
+    "include-inner-classes-braces-with-package-object",
+    """|package pkg
+       |class A {
+       |  trait Z
+       |}
+       |
+       |package object B {
+       |  class Y {
+       |    trait L
+       |  }
+       |}
+       |""".stripMargin,
+    List(
+      "pkg/", "pkg/A#", "pkg/A#Z#", "pkg/B.", "pkg/B.Y#", "pkg/B.Y#L#",
+    ),
+    mode = All,
+  )
+
+  check(
     "package-object",
     """|package x
        |package object y:
        |  trait A
        |""".stripMargin,
     List(
-      "x/y/package."
+      "x/y."
     ),
   )
 
