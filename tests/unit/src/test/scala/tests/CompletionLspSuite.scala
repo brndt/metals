@@ -22,8 +22,8 @@ class CompletionLspSuite extends BaseCompletionLspSuite("completion") {
           |{
           |  "b": {},
           |  "c": {},
-          |  "a": { "dependsOn": ["c"] },
-          |  "d": { "dependsOn": ["c"] }
+          |  "a": { "dependsOn": ["c", "d"] },
+          |  "d": {}
           |}
           |/b/src/main/scala/b/DefinedInB.scala
           |package b
